@@ -1,11 +1,12 @@
 package com.tracker.leetcode.service;
 
 import com.tracker.leetcode.entity.TargetType;
+import com.tracker.leetcode.entity.RateLimit;
 import com.tracker.leetcode.enums.RateLimitingStrategy;
 
 public interface RateLimiter {
     /**
-     * Tries to acquire 1 permit now.
+     * Tries to acquire 1 permit to access resources.
      * @return true if allowed, false if rate-limited
      */
     boolean tryAcquire(String entityValue, TargetType targetType, RateLimit rateLimitConfig);

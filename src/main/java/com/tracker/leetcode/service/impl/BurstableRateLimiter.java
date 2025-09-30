@@ -1,5 +1,6 @@
 package com.tracker.leetcode.service.impl;
 
+import com.tracker.leetcode.entity.RateLimit;
 import com.tracker.leetcode.entity.TargetType;
 import com.tracker.leetcode.enums.RateLimitingStrategy;
 import com.tracker.leetcode.service.RateLimiter;
@@ -30,8 +31,8 @@ public class BurstableRateLimiter implements RateLimiter {
             }
             boolean set = Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(
                     key,
-                    String.valueOf(rateLimitConfig.getMetadata().getLimit() - 1),
-                    rateLimitConfig.getMetadata().getWindow(),
+                    String.valueOf(rateLimitConfig.getMaxRequests() - 1),
+                    rateLimitConfig.getRefreshInterval(),
                     TimeUnit.SECONDS
             ));
             if (set) {

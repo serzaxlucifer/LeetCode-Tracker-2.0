@@ -1,6 +1,7 @@
 package com.tracker.leetcode.service.impl;
 
 import com.tracker.leetcode.entity.TargetType;
+import com.tracker.leetcode.entity.RateLimit;
 import com.tracker.leetcode.enums.RateLimitingStrategy;
 import com.tracker.leetcode.service.RateLimiter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class NonBurstableRateLimiter implements RateLimiter {
 
@@ -58,9 +58,10 @@ public class NonBurstableRateLimiter implements RateLimiter {
             rateLimitConfig = getRateLimit(entityValue, targetType);
         }
 
-        int capacity = rateLimitConfig.getMetadata().getLimit();
-        int windowSeconds = (int) rateLimitConfig.getMetadata().getWindow();
-        double refillRate = (double) capacity / (windowSeconds * 1000.0);
+        int capacity = rateLimitConfig.getMaxRequests();
+        int windowSeconds = (int) rateLimitConfig.getRefreshInterval();
+        double refillFactor = rateLimitConfig.getMetadata().getRefillFactor();
+        double refillRate = ((double) capacity / (windowSeconds * 1000.0)) * refillFactor;
 
         long now = System.currentTimeMillis();
 

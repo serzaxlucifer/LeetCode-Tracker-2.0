@@ -1,6 +1,7 @@
 package com.tracker.leetcode.service.impl;
 
 import com.tracker.leetcode.components.SystemLoadMonitor;
+import com.tracker.leetcode.entity.RateLimit;
 import com.tracker.leetcode.entity.TargetType;
 import com.tracker.leetcode.enums.RateLimitingStrategy;
 import com.tracker.leetcode.service.RateLimiter;
